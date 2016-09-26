@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes  } from 'react';
 import { reduxForm } from 'redux-form';
 import { createPost } from '../actions/index';
 import { Link } from 'react-router';
@@ -8,12 +8,19 @@ class PostsNew extends Component {
     router: PropTypes.object
   };
 
+  onSubmit(props) {
+    this.props.createPost(props)
+      .then(() => {
+        this.context.router.push('/');
+      });
+  };
+
   render() {
     const { fields: { title, categories, content }, handleSubmit } = this.props;
     console.log(title);
 
     return (
-      <form onSubmit={handleSubmit(this.props.createPost)}>
+      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
         <h3>Create A New Post</h3>
         <div className={`form-group ${title.touched && title.invalid ? 'has-danger' : ''}`}>
           <label>Title</label>
@@ -27,13 +34,17 @@ class PostsNew extends Component {
         <div className={`form-group ${categories.touched && categories.invalid ? 'has-danger' : ''}`}>
           <label>Categories</label>
           <input type="text" className="form-control" {...categories} />
-          {categories.touched ? categories.error : ''}
+          <div className="text-help">
+            {categories.touched ? categories.error : ''}
+          </div>
         </div>
 
         <div className={`form-group ${content.touched && content.invalid ? 'has-danger' : ''}`}>
           <label>Content</label>
           <textarea type="text" className="form-control" {...content} />
-          {content.touched ? content.error : ''}
+          <div className="text-help">
+            {content.touched ? content.error : ''}
+          </div>
         </div>
 
         <button type="submit" className="btn btn-primary">Submit</button>
@@ -51,7 +62,8 @@ function validate(values) {
   }
   if(!values.categories) {
     errors.categories = "Please enter a category";
-  }if(!values.content) {
+  }
+  if(!values.content) {
     errors.content = "Enter some content";
   }
 

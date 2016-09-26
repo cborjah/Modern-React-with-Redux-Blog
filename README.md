@@ -4,12 +4,10 @@
 
 ```
 	> npm install
-
 ```
 
 To start server and run app...
 
 ```
 	> npm start
-	
 ```
