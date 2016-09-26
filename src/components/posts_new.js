@@ -62,4 +62,4 @@ export default reduxForm({ // reduxForm has the exact same behavior as connect. 
   form: 'PostsNewForm',
   fields: ['title', 'categories', 'content'],
   validate
-}, null, { createPost })(PostsNew);
+}, null, { createPost })(PostsNew); // May not work with newest version of reduxForm.
